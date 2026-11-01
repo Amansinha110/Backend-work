@@ -1,0 +1,89 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Authenticated user profile in the Quantinox ERP ecosystem",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique user ID matching Firebase Auth UID" },
+        "email": { "type": "string", "format": "email", "description": "User email address" },
+        "displayName": { "type": "string", "description": "User full name" },
+        "photoURL": { "type": "string", "description": "Profile picture URL" },
+        "company": { "type": "string", "description": "Organization or company name" },
+        "role": { "type": "string", "enum": ["viewer", "analyst", "admin", "executive"], "description": "System access role" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Account creation timestamp" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Last update timestamp" }
+      },
+      "required": ["id", "email"]
+    },
+    "Inquiry": {
+      "title": "Inquiry",
+      "description": "Enterprise lead, consultation, or demo request",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique inquiry identifier" },
+        "userId": { "type": "string", "description": "Optional submitting user ID" },
+        "name": { "type": "string", "description": "Contact person name" },
+        "company": { "type": "string", "description": "Enterprise name" },
+        "email": { "type": "string", "format": "email", "description": "Work email address" },
+        "phone": { "type": "string", "description": "Phone number" },
+        "category": { "type": "string", "description": "Inquiry category e.g. Demo, Pricing, Advisory" },
+        "message": { "type": "string", "description": "Details or requirements" },
+        "status": { "type": "string", "enum": ["new", "in_review", "scheduled", "completed"], "description": "Lead processing status" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Submission timestamp" }
+      },
+      "required": ["name", "email", "message"]
+    },
+    "RoiCalculation": {
+      "title": "RoiCalculation",
+      "description": "Saved ERP Business Value and ROI simulation",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique calculation record ID" },
+        "userId": { "type": "string", "description": "Owner user ID" },
+        "companyName": { "type": "string", "description": "Company evaluated" },
+        "employees": { "type": "integer", "description": "Number of enterprise employees" },
+        "annualRevenue": { "type": "number", "description": "Annual revenue in USD or INR" },
+        "estimatedAnnualSavings": { "type": "number", "description": "Calculated annual operational savings" },
+        "projectedRoiPercent": { "type": "number", "description": "Estimated ROI percentage" },
+        "paybackMonths": { "type": "number", "description": "Estimated payback period in months" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Calculation timestamp" }
+      },
+      "required": ["userId", "estimatedAnnualSavings"]
+    },
+    "ChatSession": {
+      "title": "ChatSession",
+      "description": "Multi-turn Gemini AI conversational session and message log",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique session ID" },
+        "userId": { "type": "string", "description": "Owner user ID or anonymous visitor session ID" },
+        "title": { "type": "string", "description": "Conversation summary topic" },
+        "model": { "type": "string", "description": "Gemini model used e.g. gemini-3.8-flash" },
+        "persona": { "type": "string", "description": "System role e.g. ERP Architect, Supply Chain Specialist" },
+        "messages": { "type": "array", "description": "Chronological thread of message turns" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Session start timestamp" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Last turn timestamp" }
+      },
+      "required": ["id", "model"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "entities/User" },
+      "description": "User profile document keyed by auth UID"
+    },
+    "/inquiries/{inquiryId}": {
+      "schema": { "$ref": "entities/Inquiry" },
+      "description": "Lead and contact inquiries submitted by enterprise prospects"
+    },
+    "/calculations/{calcId}": {
+      "schema": { "$ref": "entities/RoiCalculation" },
+      "description": "User saved ROI and financial transformation calculations"
+    },
+    "/chatSessions/{sessionId}": {
+      "schema": { "$ref": "entities/ChatSession" },
+      "description": "Stored multi-turn Gemini conversation threads"
+    }
+  }
+}

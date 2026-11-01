@@ -1,0 +1,8 @@
+{
+  "name": "Quantinox IT Technology",
+  "description": "Quantinox Cloud ERP runs finance, supply chain, manufacturing, procurement, sales, services and HR on one intelligent cloud platform with built-in Quanta AI agents.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
